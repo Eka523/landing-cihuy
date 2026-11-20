@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101b2a">
+<title>Perjalanan ke Nagoya — Countdown</title>
+<style>
+  :root { color-scheme: dark; --ink:#f5f1e9; --muted:#c2c9d0; --gold:#d9b77a; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; min-height:100%; }
+  body {
+    min-height:100vh; display:grid; place-items:center; padding:28px;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    color:var(--ink); overflow-x:hidden;
+    background:
+      linear-gradient(115deg, rgba(8,17,29,.94) 0%, rgba(11,25,40,.78) 48%, rgba(16,28,42,.45) 100%),
+      radial-gradient(ellipse at 75% 25%, rgba(207,160,118,.22), transparent 35%),
+      linear-gradient(160deg,#172b40 0%,#263b4b 48%,#101c2a 100%);
+    position:relative;
+  }
+  /* Ilustrasi lanskap Fuji dan matahari, dibuat dengan CSS agar halaman tetap offline-friendly */
+  body:before {
+    content:""; position:fixed; inset:0; pointer-events:none; opacity:.9;
+    background:
+      radial-gradient(circle at 78% 25%, rgba(224,185,139,.92) 0 5.5%, rgba(224,185,139,.18) 5.7%, transparent 18%),
+      linear-gradient(142deg, transparent 0 56%, rgba(13,27,39,.0) 56.2%),
+      linear-gradient(138deg, transparent 0 53%, rgba(9,21,33,.75) 53.2%),
+      linear-gradient(180deg, transparent 0 66%, rgba(5,15,25,.88) 66.2%);
+    z-index:-1;
+  }
+  .landscape { position:fixed; inset:auto 0 0; height:42vh; pointer-events:none; z-index:-1; overflow:hidden; }
+  .mountain { position:absolute; bottom:-2px; width:0;height:0; border-left:34vw solid transparent; border-right:34vw solid transparent; border-bottom:35vh solid rgba(12,28,42,.82); }
+  .mountain.one { left:25%; }
+  .mountain.two { left:54%; transform:scale(.72); transform-origin:bottom; border-bottom-color:rgba(18,38,52,.9); }
+  .mountain:after { content:""; position:absolute; left:-5vw; top:7vh; width:10vw; height:4vh; background:rgba(231,225,211,.65); clip-path:polygon(50% 0,100% 100%,0 100%); }
+  .water { position:absolute; bottom:0; left:0; right:0; height:12vh; background:linear-gradient(180deg,rgba(26,53,68,.28),rgba(5,17,29,.95)); }
+  .grain { position:fixed; inset:0; pointer-events:none; opacity:.12; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E"); }
+  .card {
+    width:min(920px,100%); padding:clamp(28px,6vw,64px);
+    background:linear-gradient(145deg,rgba(16,31,46,.78),rgba(12,25,39,.58));
+    border:1px solid rgba(232,220,198,.22); border-radius:26px;
+    box-shadow:0 28px 90px rgba(0,0,0,.34); backdrop-filter:blur(16px);
+    text-align:center; position:relative;
+  }
+  .eyebrow { color:var(--gold); letter-spacing:.28em; text-transform:uppercase; font-size:.72rem; font-weight:700; }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-weight:500; font-size:clamp(2.7rem,8vw,5.7rem); line-height:.98; margin:18px 0 12px; letter-spacing:-.045em; }
+  .subtitle { color:var(--muted); font-size:clamp(.95rem,2vw,1.12rem); letter-spacing:.08em; }
+  .rule { width:62px; height:1px; background:var(--gold); margin:30px auto; opacity:.85; }
+  .label { color:#d8d9d7; text-transform:uppercase; letter-spacing:.2em; font-size:.72rem; margin-bottom:18px; }
+  .timer { display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(8px,2vw,18px); max-width:690px; margin:0 auto; }
+  .unit { padding:clamp(13px,3vw,22px) 8px; border:1px solid rgba(236,225,207,.17); border-radius:15px; background:rgba(255,255,255,.045); }
+  .number { display:block; font-variant-numeric:tabular-nums; font-size:clamp(2rem,6vw,4.3rem); line-height:1.05; font-weight:300; }
+  .unit-name { display:block; margin-top:9px; color:#c0c9d0; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; }
+  .date { margin-top:27px; color:#e8d8bd; font-size:.95rem; letter-spacing:.06em; }
+  .note { margin-top:34px; color:rgba(222,228,230,.65); font-size:.78rem; letter-spacing:.04em; }
+  .kanji { position:absolute; top:24px; right:28px; color:rgba(233,218,192,.14); font-family:serif; font-size:2rem; writing-mode:vertical-rl; }
+  @media(max-width:520px) { body{padding:14px}.card{border-radius:20px}.timer{grid-template-columns:repeat(2,1fr)}.kanji{font-size:1.4rem;top:16px;right:17px} }
+</style>
+</head>
+<body>
+<div class="landscape" aria-hidden="true"><div class="mountain one"></div><div class="mountain two"></div><div class="water"></div></div>
+<div class="grain" aria-hidden="true"></div>
+<main class="card">
+  <div class="kanji" aria-hidden="true">名古屋 · 日本</div>
+  <div class="eyebrow">A journey to remember</div>
+  <h1>Nagoya, Japan</h1>
+  <div class="subtitle">Satu perjalanan. Banyak cerita yang menanti.</div>
+  <div class="rule"></div>
+  <div class="label">Countdown keberangkatan</div>
+  <section class="timer" aria-label="Hitung mundur">
+    <div class="unit"><span class="number" id="days">000</span><span class="unit-name">Hari</span></div>
+    <div class="unit"><span class="number" id="hours">00</span><span class="unit-name">Jam</span></div>
+    <div class="unit"><span class="number" id="minutes">00</span><span class="unit-name">Menit</span></div>
+    <div class="unit"><span class="number" id="seconds">00</span><span class="unit-name">Detik</span></div>
+  </section>
+  <div class="date">11 FEBRUARI 2027 <span aria-hidden="true">·</span> 16.30 WIB</div>
+  <div class="note" id="message">Menuju momen keberangkatan — Nagoya menanti.</div>
+</main>
+<script>
+  // Waktu target menggunakan zona waktu Jakarta (WIB, UTC+7).
+  const target = new Date("2027-02-11T16:30:00+07:00").getTime();
+  const fields = {
+    days: document.getElementById("days"),
+    hours: document.getElementById("hours"),
+    minutes: document.getElementById("minutes"),
+    seconds: document.getElementById("seconds")
+  };
+  const message = document.getElementById("message");
+  const pad = n => String(n).padStart(2, "0");
+  function updateCountdown() {
+    const distance = target - Date.now();
+    if (distance <= 0) {
+      Object.values(fields).forEach(el => el.textContent = "00");
+      message.textContent = "Waktunya berangkat. Selamat menikmati perjalanan ke Nagoya!";
+      return;
+    }
+    const days = Math.floor(distance / 86400000);
+    const hours = Math.floor((distance % 86400000) / 3600000);
+    const minutes = Math.floor((distance % 3600000) / 60000);
+    const seconds = Math.floor((distance % 60000) / 1000);
+    fields.days.textContent = String(days).padStart(3, "0");
+    fields.hours.textContent = pad(hours);
+    fields.minutes.textContent = pad(minutes);
+    fields.seconds.textContent = pad(seconds);
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
